@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SSS Test</string>
+    <string name="empty_list">No news found!</string>
+    <string name="an_error_occurred">An error occurred</string>
+</resources>
