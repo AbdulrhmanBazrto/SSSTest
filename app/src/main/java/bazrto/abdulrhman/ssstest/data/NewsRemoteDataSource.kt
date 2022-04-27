@@ -14,9 +14,16 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
     private var call: Call<ArticlesResponse>? = null
     private val service = apiClient.build()
 
-    override fun retrieveNews(page: Int, callback: OperationCallback<News>) {
+    override suspend fun retrieveNews(page: Int, callback: OperationCallback<News>) {
 
-        call = service?.articles("dubai", page)
+        val apiResponse: ArticlesResponse? = service?.articles("dubai", page)
+        if (apiResponse != null && apiResponse.isSuccess()) {
+            var response = apiResponse.response
+            callback.onSuccess(response?.docs)
+        } else {
+            callback.onError(apiResponse.toString())
+        }
+
         call?.enqueue(object : Callback<ArticlesResponse> {
             override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
                 callback.onError(t.message)
@@ -26,17 +33,7 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
                 call: Call<ArticlesResponse>,
                 response: Response<ArticlesResponse>
             ) {
-                if (response.code() == 200) {
-                    response.body()?.let {
-                        if (response.isSuccessful && (it.isSuccess())) {
-                            callback.onSuccess(it.response?.docs)
-                        } else {
-                            callback.onError("un expected response")
-                        }
-                    }
-                } else {
-                    callback.onError(response.errorBody()?.string())
-                }
+
             }
         })
     }

@@ -51,7 +51,7 @@ object ApiClient {
     interface ServicesApiInterface {
 
         @GET("/svc/search/v2/articlesearch.json")
-        fun articles(@Query("q") search: String, @Query("page") page: Int): Call<ArticlesResponse>
+        suspend fun articles(@Query("q") search: String, @Query("page") page: Int): ArticlesResponse
 
     }
 }
