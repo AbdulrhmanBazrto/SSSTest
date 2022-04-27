@@ -1,9 +1,11 @@
 package bazrto.abdulrhman.ssstest.view
 
+import PaginationScrollListener
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,15 +43,39 @@ class NewsListingActivity : AppCompatActivity() {
 
     //ui
     private fun setupUI() {
-        adapter = NewsAdapter(viewModel.news.value ?: emptyList(),listener)
+        adapter = NewsAdapter(viewModel.news.value?.toMutableList() ?: mutableListOf(), listener)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        recyclerView.addOnScrollListener(object :
+            PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+                viewModel.loadNextPage()
+            }
+
+            override val isLastPage: Boolean
+                get() {
+                    return if (viewModel.isLastPage.value != null)
+                        viewModel.isLastPage.value!!
+                    else
+                        true
+                }
+            override val isLoading: Boolean
+                get() {
+                    return if (viewModel._isLoading.value != null)
+                        viewModel._isLoading.value!!
+                    else
+                        true
+                }
+        })
+
+
         recyclerView.adapter = adapter
     }
 
     //view model
     private fun setupViewModel() {
         viewModel.news.observe(this, renderNews)
-        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
+        viewModel._isLoading.observe(this, isLoadingObserver)
         viewModel.onMessageError.observe(this, onMessageErrorObserver)
         viewModel.isEmptyList.observe(this, emptyListObserver)
     }
@@ -62,7 +88,7 @@ class NewsListingActivity : AppCompatActivity() {
         adapter.update(it)
     }
 
-    private val isViewLoadingObserver = Observer<Boolean> {
+    private val isLoadingObserver = Observer<Boolean> {
         Log.v(TAG, "isViewLoading $it")
         val visibility = if (it) View.VISIBLE else View.GONE
         progressBar.visibility = visibility
@@ -70,9 +96,18 @@ class NewsListingActivity : AppCompatActivity() {
 
     private val onMessageErrorObserver = Observer<Any> {
         Log.v(TAG, "onMessageError $it")
-        layoutError.visibility = View.VISIBLE
+//        layoutError.visibility = View.VISIBLE
         layoutEmpty.visibility = View.GONE
         textViewError.text = "Error $it"
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error!!")
+        builder.setMessage(it.toString())
+        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            dialog.dismiss()
+        }
+        builder.show()
+
     }
 
     private val emptyListObserver = Observer<Boolean> {

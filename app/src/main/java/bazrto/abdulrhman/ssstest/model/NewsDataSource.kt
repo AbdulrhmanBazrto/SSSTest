@@ -7,5 +7,5 @@ import bazrto.abdulrhman.ssstest.data.OperationCallback
  */
 interface NewsDataSource {
 
-    fun retrieveNews(callback: OperationCallback<News>)
+    fun retrieveNews(page: Int,callback: OperationCallback<News>)
 }

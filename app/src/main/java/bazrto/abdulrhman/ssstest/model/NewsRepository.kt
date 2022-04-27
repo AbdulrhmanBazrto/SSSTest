@@ -7,8 +7,8 @@ import bazrto.abdulrhman.ssstest.data.OperationCallback
  */
 class NewsRepository(private val newsDataSource: NewsDataSource) {
 
-    fun fetchNews(callback: OperationCallback<News>) {
-        newsDataSource.retrieveNews(callback)
+    fun fetchNews(page: Int,callback: OperationCallback<News>) {
+        newsDataSource.retrieveNews(page,callback)
     }
 
     fun cancel() {

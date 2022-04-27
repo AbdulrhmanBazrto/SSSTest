@@ -8,6 +8,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * @author Abd alrhman bazartwo
@@ -49,8 +50,8 @@ object ApiClient {
 
     interface ServicesApiInterface {
 
-        @GET("/svc/search/v2/articlesearch.json?q=dubai&page=0")
-        fun articles(): Call<ArticlesResponse>
+        @GET("/svc/search/v2/articlesearch.json")
+        fun articles(@Query("q") search: String, @Query("page") page: Int): Call<ArticlesResponse>
 
     }
 }

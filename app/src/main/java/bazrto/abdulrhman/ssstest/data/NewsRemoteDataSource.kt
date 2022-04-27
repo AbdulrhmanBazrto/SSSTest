@@ -14,9 +14,9 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
     private var call: Call<ArticlesResponse>? = null
     private val service = apiClient.build()
 
-    override fun retrieveNews(callback: OperationCallback<News>) {
+    override fun retrieveNews(page: Int, callback: OperationCallback<News>) {
 
-        call = service?.articles()
+        call = service?.articles("dubai", page)
         call?.enqueue(object : Callback<ArticlesResponse> {
             override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
                 callback.onError(t.message)
@@ -34,7 +34,7 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
                             callback.onError("un expected response")
                         }
                     }
-                }else{
+                } else {
                     callback.onError(response.errorBody()?.string())
                 }
             }

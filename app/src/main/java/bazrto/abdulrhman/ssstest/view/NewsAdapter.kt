@@ -1,5 +1,6 @@
 package bazrto.abdulrhman.ssstest.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,15 @@ import com.bumptech.glide.Glide
 import bazrto.abdulrhman.ssstest.R
 import bazrto.abdulrhman.ssstest.config.Const
 import bazrto.abdulrhman.ssstest.model.News
+import bazrto.abdulrhman.ssstest.utils.DateUtils
 import kotlinx.android.synthetic.main.row_news.view.*
+import java.util.*
 
 /**
  * @author Abd alrhman bazartwo
  */
 class NewsAdapter(
-    private var news: List<News>,
+    private var news: MutableList<News>,
     private val listener: CustomViewHolderListener
 ) :
     RecyclerView.Adapter<NewsAdapter.MViewHolder>() {
@@ -40,17 +43,34 @@ class NewsAdapter(
     }
 
     fun update(data: List<News>) {
-        news = data
-        notifyDataSetChanged()
+        if (news.isNullOrEmpty()) {
+            news = data.toMutableList()
+            notifyDataSetChanged()
+        }else{
+            val oldSize = news.size
+            news.addAll(data)
+            notifyItemRangeInserted(oldSize,data.size)
+        }
     }
 
     class MViewHolder(view: View, private val listener: CustomViewHolderListener) :
         RecyclerView.ViewHolder(view) {
         private val textViewName: TextView = view.textViewName
+        private val textViewDate: TextView = view.textViewDate
+        private val textViewSource: TextView = view.textViewSource
         private val imageView: ImageView = view.imageView
         fun bind(news: News) {
-            textViewName.text = news.snippet.capitalize()
-            if (news.multimedia.isNotEmpty()) {
+
+            textViewName.text = news.abstract.capitalize()
+            textViewSource.text = news.source?.capitalize()
+
+            val timeAgo = DateUtils.covertTimeToText(news.pub_date)
+            textViewDate.text = timeAgo
+
+            if (news.multimedia.isNullOrEmpty()) {
+               imageView.visibility = View.GONE
+            }else{
+                imageView.visibility = View.VISIBLE
                 Glide.with(imageView.context).load(Const.imagesBaseUrl + news.multimedia[0].url)
                     .into(imageView)
             }
