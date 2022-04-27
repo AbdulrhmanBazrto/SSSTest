@@ -1,6 +1,5 @@
-package bazrto.abdulrhman.ssstest.view
+package bazrto.abdulrhman.ssstest.view.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import bazrto.abdulrhman.ssstest.config.Const
 import bazrto.abdulrhman.ssstest.model.News
 import bazrto.abdulrhman.ssstest.utils.DateUtils
 import kotlinx.android.synthetic.main.row_news.view.*
-import java.util.*
 
 /**
  * @author Abd alrhman bazartwo
@@ -25,7 +23,7 @@ class NewsAdapter(
     RecyclerView.Adapter<NewsAdapter.MViewHolder>() {
 
     interface CustomViewHolderListener {
-        fun onCustomItemClicked()
+        fun onCustomItemClicked(item:News)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MViewHolder {
@@ -61,7 +59,12 @@ class NewsAdapter(
         private val imageView: ImageView = view.imageView
         fun bind(news: News) {
 
-            textViewName.text = news.abstract.capitalize()
+            if (news.lead_paragraph.isEmpty()){
+                textViewName.text = news.abstract.capitalize()
+            }else{
+                textViewName.text = news.lead_paragraph.capitalize()
+            }
+
             textViewSource.text = news.source?.capitalize()
 
             val timeAgo = DateUtils.covertTimeToText(news.pub_date)
@@ -75,7 +78,7 @@ class NewsAdapter(
                     .into(imageView)
             }
             itemView.setOnClickListener {
-                listener.onCustomItemClicked()
+                listener.onCustomItemClicked(news)
             }
         }
     }

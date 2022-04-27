@@ -1,17 +1,20 @@
 package bazrto.abdulrhman.ssstest.view
 
 import PaginationScrollListener
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import bazrto.abdulrhman.ssstest.R
 import bazrto.abdulrhman.ssstest.di.Injection
 import bazrto.abdulrhman.ssstest.model.News
+import bazrto.abdulrhman.ssstest.view.adapters.NewsAdapter
 import bazrto.abdulrhman.ssstest.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.activity_news.*
 import kotlinx.android.synthetic.main.layout_error.*
@@ -27,8 +30,10 @@ class NewsListingActivity : AppCompatActivity() {
     private lateinit var adapter: NewsAdapter
 
     val listener = object : NewsAdapter.CustomViewHolderListener {
-        override fun onCustomItemClicked() {
-            // open details activity
+        override fun onCustomItemClicked(item:News) {
+            val intent = Intent(baseContext, NewsDetailsActivity::class.java)
+            intent.putExtra("news",item)
+            startActivity(intent)
         }
     }
 
@@ -36,6 +41,7 @@ class NewsListingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         setupViewModel()
         setupUI()

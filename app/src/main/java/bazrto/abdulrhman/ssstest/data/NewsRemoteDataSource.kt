@@ -41,4 +41,7 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
         })
     }
 
+    override fun cancel() {
+        call?.cancel()
+    }
 }

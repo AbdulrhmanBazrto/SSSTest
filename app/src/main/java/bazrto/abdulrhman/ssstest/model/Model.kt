@@ -24,6 +24,7 @@ data class News(
     val section_name: String,
     val word_count: Int,
     val source: String?,
+    val type_of_material: String?,
     val uri: String
 ) : Serializable
 

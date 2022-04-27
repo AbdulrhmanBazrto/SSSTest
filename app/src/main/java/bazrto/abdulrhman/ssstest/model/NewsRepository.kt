@@ -1,5 +1,6 @@
 package bazrto.abdulrhman.ssstest.model
 
+import bazrto.abdulrhman.ssstest.data.ArticlesResponse
 import bazrto.abdulrhman.ssstest.data.OperationCallback
 
 /**
@@ -7,11 +8,11 @@ import bazrto.abdulrhman.ssstest.data.OperationCallback
  */
 class NewsRepository(private val newsDataSource: NewsDataSource) {
 
-    fun fetchNews(page: Int,callback: OperationCallback<News>) {
+    suspend fun fetchNews(page: Int,callback: OperationCallback<News>) {
         newsDataSource.retrieveNews(page,callback)
     }
 
     fun cancel() {
-
+        newsDataSource.cancel()
     }
 }
