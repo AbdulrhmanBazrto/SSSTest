@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import bazrto.abdulrhman.ssstest.R
 import bazrto.abdulrhman.ssstest.di.Injection
 import bazrto.abdulrhman.ssstest.model.News
-import bazrto.abdulrhman.ssstest.view.NewsDetailsActivity
-import bazrto.abdulrhman.ssstest.view.NewsListingActivity
 import bazrto.abdulrhman.ssstest.view.adapters.NewsAdapter
 import bazrto.abdulrhman.ssstest.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_news_listing.*
@@ -80,18 +78,7 @@ class NewsListingFragment : Fragment() {
             )
             findNavController().navigate(R.id.action_details, bundle, null, extras)
 
-        } else {
-//            val intent = Intent(requireActivity(), NewsDetailsActivity::class.java)
-//            intent.putExtra("news", item)
-//            startActivity(intent)
         }
-    }
-
-    /**
-     * this function is called from the testing unit
-     */
-    public fun openDetailsActivity(item: News) {
-        openDetailsActivity(item, null)
     }
 
     //ui
@@ -140,7 +127,7 @@ class NewsListingFragment : Fragment() {
 
     //observers
     private val renderNews = Observer<List<News>> {
-        Log.v(NewsListingActivity.TAG, "data updated $it")
+        Log.v("data updated", "data updated $it")
         layoutError.visibility = View.GONE
         layoutEmpty.visibility = View.GONE
         var animateView = false
@@ -154,13 +141,13 @@ class NewsListingFragment : Fragment() {
     }
 
     private val isLoadingObserver = Observer<Boolean> {
-        Log.v(NewsListingActivity.TAG, "isViewLoading $it")
+        Log.v("isViewLoading", "isViewLoading $it")
         val visibility = if (it) View.VISIBLE else View.GONE
         progressBar.visibility = visibility
     }
 
     private val onMessageErrorObserver = Observer<Any> {
-        Log.v(NewsListingActivity.TAG, "onMessageError $it")
+        Log.v("onMessageError", "onMessageError $it")
         layoutEmpty.visibility = View.GONE
         textViewError.text = "Error $it"
 
@@ -175,7 +162,7 @@ class NewsListingFragment : Fragment() {
     }
 
     private val emptyListObserver = Observer<Boolean> {
-        Log.v(NewsListingActivity.TAG, "emptyListObserver $it")
+        Log.v("emptyListObserver", "emptyListObserver $it")
         layoutEmpty.visibility = View.VISIBLE
         layoutError.visibility = View.GONE
     }

@@ -5,13 +5,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import bazrto.abdulrhman.ssstest.capture
 import bazrto.abdulrhman.ssstest.config.Const
 import bazrto.abdulrhman.ssstest.data.OperationCallback
 import bazrto.abdulrhman.ssstest.model.*
 import bazrto.abdulrhman.ssstest.utils.DateUtils
-import bazrto.abdulrhman.ssstest.view.NewsListingActivity
 import bazrto.abdulrhman.ssstest.viewmodel.NewsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
