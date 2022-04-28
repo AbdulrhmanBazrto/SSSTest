@@ -23,7 +23,7 @@ class NewsAdapter(
     RecyclerView.Adapter<NewsAdapter.MViewHolder>() {
 
     interface CustomViewHolderListener {
-        fun onCustomItemClicked(item:News)
+        fun onCustomItemClicked(item:News,imageView: ImageView?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MViewHolder {
@@ -78,7 +78,7 @@ class NewsAdapter(
                     .into(imageView)
             }
             itemView.setOnClickListener {
-                listener.onCustomItemClicked(news)
+                listener.onCustomItemClicked(news,imageView)
             }
         }
     }

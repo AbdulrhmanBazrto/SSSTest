@@ -14,7 +14,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.NewsDetailsActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".view.NewsListingActivity"
             android:exported="true">

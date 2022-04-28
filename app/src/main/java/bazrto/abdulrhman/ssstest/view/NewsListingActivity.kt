@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import bazrto.abdulrhman.ssstest.R
@@ -18,6 +20,7 @@ import bazrto.abdulrhman.ssstest.view.adapters.NewsAdapter
 import bazrto.abdulrhman.ssstest.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.activity_news.*
 import kotlinx.android.synthetic.main.layout_error.*
+
 
 /**
  * @author Abd alrhman bazartwo
@@ -30,15 +33,28 @@ class NewsListingActivity : AppCompatActivity() {
     private lateinit var adapter: NewsAdapter
 
     val listener = object : NewsAdapter.CustomViewHolderListener {
-        override fun onCustomItemClicked(item: News) {
-            openDetailsActivity(item)
+        override fun onCustomItemClicked(item: News,imageView: ImageView?) {
+            openDetailsActivity(item,imageView)
+        }
+    }
+
+    public fun openDetailsActivity(item: News, imageView: ImageView?) {
+
+        if (imageView != null) {
+            val activityOptionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this, imageView, "imageMain")
+            val intent = Intent(baseContext, NewsDetailsActivity::class.java)
+            intent.putExtra("news", item)
+            startActivity(intent, activityOptionsCompat.toBundle())
+        } else {
+            val intent = Intent(baseContext, NewsDetailsActivity::class.java)
+            intent.putExtra("news", item)
+            startActivity(intent)
         }
     }
 
     public fun openDetailsActivity(item: News) {
-        val intent = Intent(baseContext, NewsDetailsActivity::class.java)
-        intent.putExtra("news", item)
-        startActivity(intent)
+        openDetailsActivity(item,null)
     }
 
 
@@ -95,7 +111,14 @@ class NewsListingActivity : AppCompatActivity() {
         Log.v(TAG, "data updated $it")
         layoutError.visibility = View.GONE
         layoutEmpty.visibility = View.GONE
+        var animateView = false
+        if (adapter.itemCount == 0) {
+            animateView = true
+        }
         adapter.update(it)
+        if (animateView) {
+            recyclerView.scheduleLayoutAnimation()
+        }
     }
 
     private val isLoadingObserver = Observer<Boolean> {

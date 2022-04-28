@@ -16,6 +16,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginRight="4dp"
+        android:layoutAnimation="@anim/layout_animation"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

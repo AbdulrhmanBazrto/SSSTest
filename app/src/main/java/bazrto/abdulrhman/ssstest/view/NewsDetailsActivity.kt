@@ -40,11 +40,15 @@ class NewsDetailsActivity : AppCompatActivity() {
         if (item.itemId == R.id.browser){
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(news.web_url))
             startActivity(browserIntent)
+        }else if (item.itemId == android.R.id.home){
+            finishAfterTransition()
         }
         return true;
     }
 
     private fun setupUI(){
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if (news.lead_paragraph.isEmpty()){
             textViewName.text = news.abstract.capitalize()
         }else{
