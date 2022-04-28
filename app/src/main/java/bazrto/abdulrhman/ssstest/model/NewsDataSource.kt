@@ -9,5 +9,4 @@ interface NewsDataSource {
 
     suspend fun retrieveNews(page: Int,callback: OperationCallback<News>)
 
-    fun cancel()
 }

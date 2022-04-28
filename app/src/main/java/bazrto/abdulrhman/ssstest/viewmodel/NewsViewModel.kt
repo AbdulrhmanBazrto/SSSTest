@@ -51,11 +51,12 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
         loadNews()
     }
 
-    private fun loadNews() {
+    fun loadNews() {
         _isLoading.value = true
         job = viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             repository.fetchNews(page, object : OperationCallback<News> {
                 override fun onError(error: String?) {
+                    _isEmptyList.postValue(true)
                     _isLoading.postValue(false)
                     _onMessageError.postValue(error.toString())
                 }
@@ -71,6 +72,12 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
                         isLastPage.postValue(false)
                     }
                 }
+
+                override fun onCancel() {
+                    _isEmptyList.postValue(true)
+                    _isLoading.postValue(false)
+                    _onMessageError.postValue("request cancelled")
+                }
             })
         }
 
@@ -78,8 +85,6 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-
-        repository.cancel()
         job?.cancel()
     }
 

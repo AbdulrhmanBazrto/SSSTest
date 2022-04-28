@@ -11,7 +11,6 @@ import retrofit2.Response
  */
 class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
 
-    private var call: Call<ArticlesResponse>? = null
     private val service = apiClient.build()
 
     override suspend fun retrieveNews(page: Int, callback: OperationCallback<News>) {
@@ -23,22 +22,5 @@ class NewsRemoteDataSource(apiClient: ApiClient) : NewsDataSource {
         } else {
             callback.onError(apiResponse.toString())
         }
-
-        call?.enqueue(object : Callback<ArticlesResponse> {
-            override fun onFailure(call: Call<ArticlesResponse>, t: Throwable) {
-                callback.onError(t.message)
-            }
-
-            override fun onResponse(
-                call: Call<ArticlesResponse>,
-                response: Response<ArticlesResponse>
-            ) {
-
-            }
-        })
-    }
-
-    override fun cancel() {
-        call?.cancel()
     }
 }

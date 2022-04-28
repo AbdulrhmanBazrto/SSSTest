@@ -30,11 +30,15 @@ class NewsListingActivity : AppCompatActivity() {
     private lateinit var adapter: NewsAdapter
 
     val listener = object : NewsAdapter.CustomViewHolderListener {
-        override fun onCustomItemClicked(item:News) {
-            val intent = Intent(baseContext, NewsDetailsActivity::class.java)
-            intent.putExtra("news",item)
-            startActivity(intent)
+        override fun onCustomItemClicked(item: News) {
+            openDetailsActivity(item)
         }
+    }
+
+    public fun openDetailsActivity(item: News) {
+        val intent = Intent(baseContext, NewsDetailsActivity::class.java)
+        intent.putExtra("news", item)
+        startActivity(intent)
     }
 
 
