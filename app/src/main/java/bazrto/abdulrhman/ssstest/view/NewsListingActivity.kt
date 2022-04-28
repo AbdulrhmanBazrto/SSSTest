@@ -32,13 +32,19 @@ class NewsListingActivity : AppCompatActivity() {
     }
     private lateinit var adapter: NewsAdapter
 
+    /**
+     * listen to recycler view item click to open the details page
+     */
     val listener = object : NewsAdapter.CustomViewHolderListener {
         override fun onCustomItemClicked(item: News,imageView: ImageView?) {
             openDetailsActivity(item,imageView)
         }
     }
 
-    public fun openDetailsActivity(item: News, imageView: ImageView?) {
+    /**
+     * @param imageView this param might be null if we are running unit test
+     */
+    fun openDetailsActivity(item: News, imageView: ImageView?) {
 
         if (imageView != null) {
             val activityOptionsCompat =
@@ -53,6 +59,9 @@ class NewsListingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * this function is called from the testing unit
+     */
     public fun openDetailsActivity(item: News) {
         openDetailsActivity(item,null)
     }
@@ -74,10 +83,13 @@ class NewsListingActivity : AppCompatActivity() {
 
         recyclerView.addOnScrollListener(object :
             PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
+
+            // to load more item on scrolling
             override fun loadMoreItems() {
                 viewModel.loadNextPage()
             }
 
+            // to not load more items if we are on the last page of the API
             override val isLastPage: Boolean
                 get() {
                     return if (viewModel.isLastPage.value != null)
@@ -85,6 +97,8 @@ class NewsListingActivity : AppCompatActivity() {
                     else
                         true
                 }
+
+            // to not load more items if we are already loding
             override val isLoading: Boolean
                 get() {
                     return if (viewModel._isLoading.value != null)
@@ -129,7 +143,6 @@ class NewsListingActivity : AppCompatActivity() {
 
     private val onMessageErrorObserver = Observer<Any> {
         Log.v(TAG, "onMessageError $it")
-//        layoutError.visibility = View.VISIBLE
         layoutEmpty.visibility = View.GONE
         textViewError.text = "Error $it"
 
@@ -147,10 +160,6 @@ class NewsListingActivity : AppCompatActivity() {
         Log.v(TAG, "emptyListObserver $it")
         layoutEmpty.visibility = View.VISIBLE
         layoutError.visibility = View.GONE
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     companion object {

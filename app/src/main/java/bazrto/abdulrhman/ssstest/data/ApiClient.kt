@@ -20,11 +20,12 @@ object ApiClient {
 
     fun build(): ServicesApiInterface? {
         var builder: Retrofit.Builder = Retrofit.Builder()
-            .baseUrl(Const.apiBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(Const.apiBaseUrl) // add base API url to all requests
+            .addConverterFactory(GsonConverterFactory.create()) // gson parser for retrofit
 
         var httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
-        httpClient.addInterceptor(interceptor())
+        httpClient.addInterceptor(interceptor()) // logging interceptor
+        // add interceptor to attach the api-key for each request
         httpClient.addInterceptor(Interceptor {
             val request = it.request()
             val url = request.url()

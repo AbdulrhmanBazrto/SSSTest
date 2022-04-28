@@ -18,7 +18,9 @@ import kotlinx.coroutines.launch
  */
 class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
+    // page number to load
     var page: Int = 0
+    // data loaded from API
     private val _news = MutableLiveData<List<News>>().apply { value = emptyList() }
     val news: LiveData<List<News>> = _news
 
@@ -27,6 +29,7 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    // error message to be displayed
     private val _onMessageError = MutableLiveData<Any>()
     val onMessageError: LiveData<Any> = _onMessageError
 
@@ -35,6 +38,7 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
     var job: Job? = null
 
+    // coroutine exception handler to get the error message that happened in coroutine call
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         run {
             _isLoading.postValue(false)
@@ -43,9 +47,11 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     }
 
     init {
+        // load news
         loadNews()
     }
 
+    // increase page number and load next page
     internal fun loadNextPage() {
         page++
         loadNews()
@@ -83,6 +89,7 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
     }
 
+    // stop the coroutine if the view model is stopped
     override fun onCleared() {
         super.onCleared()
         job?.cancel()

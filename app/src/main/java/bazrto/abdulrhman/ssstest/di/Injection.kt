@@ -9,6 +9,7 @@ import bazrto.abdulrhman.ssstest.viewmodel.ViewModelFactory
 
 /**
  * @author Abd alrhman bazartwo
+ * inject required dependencies
  */
 object Injection {
 

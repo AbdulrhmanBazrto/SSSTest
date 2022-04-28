@@ -5,9 +5,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * @author : Abd alrhman bazartwo
+ * date utils
+ */
+
 class DateUtils {
 
     companion object {
+
+        /**
+         * take the date as parameter and convert it to time ago format
+         */
+
         fun covertTimeToText(dataDate: String?): String? {
             var convTime: String? = null
             val prefix = ""

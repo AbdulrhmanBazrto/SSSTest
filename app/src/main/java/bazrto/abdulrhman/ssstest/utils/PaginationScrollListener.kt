@@ -1,6 +1,10 @@
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * @author : Abd alrhman bazartwo
+ * recycler view scroll listener, used to request next page from API when we reach the bottom of list
+ */
 
 abstract class PaginationScrollListener(private val layoutManager: LinearLayoutManager) :
     RecyclerView.OnScrollListener() {

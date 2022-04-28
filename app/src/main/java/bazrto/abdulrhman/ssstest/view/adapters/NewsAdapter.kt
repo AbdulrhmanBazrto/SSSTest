@@ -40,6 +40,10 @@ class NewsAdapter(
         return news.size
     }
 
+    /**
+     * either to add the new elements to existing list on load more data
+     * or to attach the first page of data to the adapter
+     */
     fun update(data: List<News>) {
         if (news.isNullOrEmpty()) {
             news = data.toMutableList()

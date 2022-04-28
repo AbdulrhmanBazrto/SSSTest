@@ -4,6 +4,7 @@ import java.io.Serializable
 
 /**
  * @author : Abd alrhman bazartwo
+ * the models that we are getting from the API's
  */
 
 data class Response(val docs: List<News>?, val meta: Meta?) : Serializable
