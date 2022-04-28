@@ -1,0 +1,28 @@
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="bazrto.abdulrhman.ssstest.view.fragments.NewsListingFragment"
+        android:label="First Fragment"
+        tools:layout="@layout/fragment_news_listing">
+
+        <action
+            android:id="@+id/action_details"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="bazrto.abdulrhman.ssstest.view.fragments.NewsDetailsFragment"
+        android:label="Second Fragment"
+        tools:layout="@layout/fragment_news_details">
+
+        <action
+            android:id="@+id/action_back"
+            app:popUpTo="@id/FirstFragment" />
+    </fragment>
+</navigation>

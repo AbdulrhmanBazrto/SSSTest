@@ -77,6 +77,7 @@ class NewsAdapter(
             if (news.multimedia.isNullOrEmpty()) {
                imageView.visibility = View.GONE
             }else{
+                imageView.transitionName = news._id
                 imageView.visibility = View.VISIBLE
                 Glide.with(imageView.context).load(Const.imagesBaseUrl + news.multimedia[0].url)
                     .into(imageView)
